@@ -1,67 +1,188 @@
-# Payload Blank Template
+# Ward Sites Template
 
-This template comes configured with the bare minimum to get started on anything you need.
+A template for creating ward websites for The Church of Jesus Christ of Latter-day Saints using Next.js and Payload CMS. This template enables wards to quickly deploy professional websites with minimal technical knowledge.
 
-## Quick start
+## Purpose
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+Wards in The Church of Jesus Christ of Latter-day Saints often need websites for communication, but creating them from scratch requires technical expertise. This template provides:
 
-## Quick Start - local setup
+- **Easy Content Management** - Ward clerks can update content through a user-friendly admin interface
+- **Standardized Features** - Common ward needs like announcements, events, leadership directory, and forms
+- **Customizable Branding** - Ward-specific colors, names, and contact information via environment variables
+- **Mobile-Responsive Design** - Works well on all devices for members on the go
 
-To spin up this template locally, follow these steps:
+## Features
 
-### Clone
+- **Announcements** - Ward business, activities, and updates
+- **Events & Calendar** - Meeting schedules and community events
+- **Leadership Directory** - Ward callings and assignments
+- **Contact Forms** - Member inquiries and volunteer signups
+- **Media Library** - Photos, documents, and recordings
+- **Sacrament Programs** - Speaker assignments and musical numbers
+- **Polls & Surveys** - Ward decision-making tools
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+## Tech Stack
 
-### Development
+- **Frontend**: Next.js 15 with React 19
+- **CMS**: Payload CMS 3.0 (headless content management)
+- **Database**: PostgreSQL (configurable)
+- **Styling**: CSS modules with custom properties
+- **Testing**: Vitest (integration) + Playwright (E2E)
+- **Deployment**: Docker-ready for easy hosting
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URI` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+## Quick Start
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+### Prerequisites
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+- Node.js 18.20.2 or higher
+- pnpm package manager
+- PostgreSQL database
 
-#### Docker (Optional)
+### Local Development
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+1. **Clone and setup**
 
-To do so, follow these steps:
+   ```bash
+   git clone <repository-url>
+   cd ward-sites
+   cp .env.example .env
+   ```
 
-- Modify the `MONGODB_URI` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URI` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+2. **Configure environment**
+   Edit `.env` with your database connection and ward-specific settings:
 
-## How it works
+   ```env
+   DATABASE_URI=postgresql://user:password@localhost:5432/ward_db
+   PAYLOAD_SECRET=your-secret-key-here
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+   # Ward customization
+   WARD_NAME="Example Ward"
+   SITE_TITLE="Example Ward Website"
+   PRIMARY_COLOR="#2E7D32"
+   ```
 
-### Collections
+3. **Install and run**
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+   ```bash
+   pnpm install
+   pnpm dev
+   ```
 
-- #### Users (Authentication)
+4. **Access the site**
+   - Frontend: http://localhost:3000
+   - Admin panel: http://localhost:3000/admin
 
-  Users are auth-enabled collections that have access to the admin panel.
+### Docker Development
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+For a complete local environment with database:
 
-- #### Media
+```bash
+docker-compose up -d
+pnpm dev
+```
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+## Customization
 
-### Docker
+Ward-specific customization is handled through environment variables in `.env`:
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+### Required Variables
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+- `DATABASE_URI` - PostgreSQL connection string
+- `PAYLOAD_SECRET` - Random secret key for Payload CMS
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+### Ward Branding
 
-## Questions
+- `WARD_NAME` - Display name of the ward
+- `WARD_STAKE` - Stake name
+- `SITE_TITLE` - Browser title and meta title
+- `SITE_DESCRIPTION` - Meta description
+- `PRIMARY_COLOR` - Main theme color
+- `SECONDARY_COLOR` - Secondary theme color
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+### Feature Flags
+
+- `ENABLE_CALENDAR` - Show/hide calendar integration
+- `ENABLE_FORMS` - Enable contact forms
+- `ENABLE_POLLS` - Enable polling functionality
+- `ENABLE_RECORDINGS` - Enable audio/video uploads
+
+### Contact Information
+
+- `WARD_ADDRESS` - Physical address
+- `WARD_PHONE` - Contact phone number
+- `WARD_EMAIL` - Contact email
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js app router
+│   ├── (frontend)/        # Public-facing pages
+│   └── (payload)/         # Admin interface
+├── collections/           # Payload CMS collections
+│   ├── Media.ts          # File uploads
+│   └── Users.ts          # Admin users
+└── payload.config.ts     # CMS configuration
+
+tests/
+├── e2e/                  # End-to-end tests
+└── int/                  # Integration tests
+```
+
+## Development Workflow
+
+1. **Content Management** - Use Payload admin at `/admin` for all content
+2. **Customization** - Update environment variables for ward-specific branding
+3. **Testing** - Run `pnpm test` for full test suite
+4. **Deployment** - Use Docker for consistent deployment
+
+### Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm lint` - Run ESLint
+- `pnpm test` - Run all tests
+- `pnpm test:int` - Run integration tests only
+- `pnpm test:e2e` - Run E2E tests only
+
+## Deployment
+
+### Docker Deployment
+
+```bash
+# Build and run with Docker
+docker build -t ward-sites .
+docker run -p 3000:3000 --env-file .env ward-sites
+```
+
+### Cloud Platforms
+
+This template is designed to work with:
+
+- Vercel (recommended for Next.js)
+- Railway
+- Render
+- Any platform supporting Node.js and PostgreSQL
+
+## Contributing
+
+### For AI Agents
+
+- Always update this README when making significant changes or architectural decisions
+- Document new environment variables in the Customization section
+- Add new features to the Features section
+- Update Tech Stack if dependencies change significantly
+
+### Code Style
+
+See [AGENTS.md](./AGENTS.md) for detailed coding guidelines and development practices.
+
+## Support
+
+For technical issues with Payload CMS, visit:
+
+- [Payload Documentation](https://payloadcms.com/docs)
+- [Discord Community](https://discord.com/invite/payload)
+
+For questions about ward website implementation, please create an issue in this repository.
