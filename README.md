@@ -7,9 +7,11 @@ A template for creating ward websites for The Church of Jesus Christ of Latter-d
 Wards in The Church of Jesus Christ of Latter-day Saints often need websites for communication, but creating them from scratch requires technical expertise. This template provides:
 
 - **Easy Content Management** - Ward clerks can update content through a user-friendly admin interface
-- **Standardized Features** - Common ward needs like announcements, events, leadership directory, and forms
-- **Customizable Branding** - Ward-specific colors, names, and contact information via environment variables
+- **Standardized Features** - Common ward needs like announcements, events, sacrament programs, and forms
+- **Comprehensive Customization** - Ward-specific branding, colors, content, and contact information via environment variables
+- **Modern React Architecture** - Server/Client components with established patterns for maintainability
 - **Mobile-Responsive Design** - Works well on all devices for members on the go
+- **Type-Safe Development** - Full TypeScript support with auto-generated Payload types
 
 ## Features
 
@@ -23,12 +25,24 @@ Wards in The Church of Jesus Christ of Latter-day Saints often need websites for
 
 ## Tech Stack
 
-- **Frontend**: Next.js 15 with React 19
+- **Frontend**: Next.js 15 with React 19 and TypeScript
 - **CMS**: Payload CMS 3.0 (headless content management)
 - **Database**: PostgreSQL (configurable)
-- **Styling**: CSS modules with custom properties
+- **Styling**: CSS with custom properties for dynamic theming
+- **Architecture**: Server/Client components with React patterns
 - **Testing**: Vitest (integration) + Playwright (E2E)
 - **Deployment**: Docker-ready for easy hosting
+
+## React Patterns
+
+This project follows established React patterns for maintainability and consistency:
+
+- **Server Components (Default)**: Data fetching, static content, layout components
+- **Client Components**: Only when needed for interactivity (hooks, event handlers)
+- **Component Organization**: Layout, UI, and Content component categories
+- **TypeScript**: Strict typing with auto-generated Payload types
+- **Styling**: CSS custom properties with environment variable overrides
+- **Error Handling**: Consistent error states and loading indicators
 
 ## Quick Start
 
@@ -49,16 +63,18 @@ Wards in The Church of Jesus Christ of Latter-day Saints often need websites for
    ```
 
 2. **Configure environment**
-   Edit `.env` with your database connection and ward-specific settings:
+   Edit `.env` with your database connection and ward-specific settings. See `.env.example` for all available options:
 
    ```env
    DATABASE_URI=postgresql://user:password@localhost:5432/ward_db
    PAYLOAD_SECRET=your-secret-key-here
 
    # Ward customization
-   WARD_NAME="Example Ward"
-   SITE_TITLE="Example Ward Website"
-   PRIMARY_COLOR="#2E7D32"
+   NEXT_PUBLIC_SITE_NAME="Oakwood Ward"
+   NEXT_PUBLIC_WARD_NAME="Oakwood Ward"
+   NEXT_PUBLIC_STAKE_NAME="Riverside Stake"
+   NEXT_PUBLIC_PRIMARY_COLOR="#1e40af"
+   NEXT_PUBLIC_HERO_TITLE="Welcome to Oakwood Ward"
    ```
 
 3. **Install and run**
@@ -83,34 +99,66 @@ pnpm dev
 
 ## Customization
 
-Ward-specific customization is handled through environment variables in `.env`:
+Ward-specific customization is handled through environment variables in `.env`. Copy `.env.example` to `.env` and customize the values for your ward.
 
 ### Required Variables
 
 - `DATABASE_URI` - PostgreSQL connection string
 - `PAYLOAD_SECRET` - Random secret key for Payload CMS
 
-### Ward Branding
+### Site Branding & Identity
 
-- `WARD_NAME` - Display name of the ward
-- `WARD_STAKE` - Stake name
-- `SITE_TITLE` - Browser title and meta title
-- `SITE_DESCRIPTION` - Meta description
-- `PRIMARY_COLOR` - Main theme color
-- `SECONDARY_COLOR` - Secondary theme color
+- `NEXT_PUBLIC_SITE_NAME` - Site title in navigation and metadata
+- `NEXT_PUBLIC_SITE_DESCRIPTION` - Site description for SEO
+- `NEXT_PUBLIC_WARD_NAME` - Your ward name
+- `NEXT_PUBLIC_STAKE_NAME` - Your stake name
 
-### Feature Flags
+### Theme Colors
 
-- `ENABLE_CALENDAR` - Show/hide calendar integration
-- `ENABLE_FORMS` - Enable contact forms
-- `ENABLE_POLLS` - Enable polling functionality
-- `ENABLE_RECORDINGS` - Enable audio/video uploads
+- `NEXT_PUBLIC_PRIMARY_COLOR` - Main brand color (#1e40af)
+- `NEXT_PUBLIC_PRIMARY_HOVER` - Primary color hover state
+- `NEXT_PUBLIC_SECONDARY_COLOR` - Secondary color for accents
+- `NEXT_PUBLIC_ACCENT_COLOR` - Accent color for highlights
+- `NEXT_PUBLIC_BG_PRIMARY` - Main background color
+- `NEXT_PUBLIC_BG_SECONDARY` - Secondary background color
+- `NEXT_PUBLIC_BG_TERTIARY` - Tertiary background color
+- `NEXT_PUBLIC_TEXT_PRIMARY` - Primary text color
+- `NEXT_PUBLIC_TEXT_SECONDARY` - Secondary text color
+- `NEXT_PUBLIC_TEXT_MUTED` - Muted text color
+- `NEXT_PUBLIC_BORDER_COLOR` - Border color
+- `NEXT_PUBLIC_BORDER_HOVER` - Border hover color
 
 ### Contact Information
 
-- `WARD_ADDRESS` - Physical address
-- `WARD_PHONE` - Contact phone number
-- `WARD_EMAIL` - Contact email
+- `NEXT_PUBLIC_WARD_CLERK_EMAIL` - Ward clerk email
+- `NEXT_PUBLIC_WARD_CLERK_PHONE` - Ward clerk phone
+- `NEXT_PUBLIC_WARD_ADDRESS` - Ward meetinghouse address
+- `NEXT_PUBLIC_BISHOPRIC_EMAIL` - Bishopric contact email
+- `NEXT_PUBLIC_BISHOPRIC_PHONE` - Bishopric contact phone
+
+### Social Media Links
+
+- `NEXT_PUBLIC_FACEBOOK_URL` - Ward Facebook page
+- `NEXT_PUBLIC_INSTAGRAM_URL` - Ward Instagram account
+- `NEXT_PUBLIC_YOUTUBE_URL` - Ward YouTube channel
+
+### Feature Flags
+
+- `NEXT_PUBLIC_ENABLE_EVENTS` - Enable/disable events functionality
+- `NEXT_PUBLIC_ENABLE_ANNOUNCEMENTS` - Enable/disable announcements
+- `NEXT_PUBLIC_ENABLE_SACRAMENT_PROGRAMS` - Enable/disable sacrament programs
+- `NEXT_PUBLIC_ENABLE_FORMS` - Enable/disable form builder
+
+### Content Customization
+
+- `NEXT_PUBLIC_HERO_TITLE` - Homepage hero section title
+- `NEXT_PUBLIC_HERO_SUBTITLE` - Homepage hero section subtitle
+- `NEXT_PUBLIC_FOOTER_TEXT` - Footer disclaimer text
+
+### Church-specific Settings
+
+- `NEXT_PUBLIC_TIMEZONE` - Ward timezone (e.g., "America/Los_Angeles")
+- `NEXT_PUBLIC_LOCALE` - Locale for date/time formatting (e.g., "en-US")
 
 ## Project Structure
 
@@ -118,15 +166,30 @@ Ward-specific customization is handled through environment variables in `.env`:
 src/
 ├── app/                    # Next.js app router
 │   ├── (frontend)/        # Public-facing pages
+│   │   ├── layout.tsx     # Root layout with theming
+│   │   ├── page.tsx       # Home page
+│   │   └── styles.css     # Global styles with CSS custom properties
 │   └── (payload)/         # Admin interface
-├── collections/           # Payload CMS collections
+├── components/            # Reusable React components
+│   ├── layout/           # Layout components (Header, Footer)
+│   ├── ui/               # UI components (RichText, Loading, ErrorMessage)
+│   └── content/          # Content components (AnnouncementCard, EventCard, Lists)
+├── lib/                  # Utilities and configurations
+│   ├── utils/            # Pure utility functions (formatters)
+│   ├── hooks/            # Custom React hooks (useLocalStorage)
+│   └── constants/        # App constants (navigation)
+├── collections/          # Payload CMS collections
+│   ├── Announcements.ts  # Ward announcements
+│   ├── Events.ts         # Ward events and meetings
+│   ├── Members.ts        # Ward members
 │   ├── Media.ts          # File uploads
 │   └── Users.ts          # Admin users
+├── payload-types.ts      # Auto-generated TypeScript types
 └── payload.config.ts     # CMS configuration
 
 tests/
-├── e2e/                  # End-to-end tests
-└── int/                  # Integration tests
+├── e2e/                  # End-to-end tests (Playwright)
+└── int/                  # Integration tests (Vitest)
 ```
 
 ## Development Workflow
@@ -173,6 +236,8 @@ This template is designed to work with:
 - Document new environment variables in the Customization section
 - Add new features to the Features section
 - Update Tech Stack if dependencies change significantly
+- Follow established React patterns documented in AGENTS.md
+- Maintain component organization (layout/, ui/, content/ directories)
 
 ### Code Style
 

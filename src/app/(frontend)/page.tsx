@@ -1,59 +1,53 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
-import { getPayload } from 'payload'
 import React from 'react'
-import { fileURLToPath } from 'url'
-
-import config from '@/payload.config'
-import './styles.css'
+import { getRecentAnnouncements, getUpcomingEvents } from '@/lib/payload'
+import type { Announcement, Event } from '@/payload-types'
+import AnnouncementsList from '@/components/content/AnnouncementsList'
+import EventsList from '@/components/content/EventsList'
 
 export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
+  let announcements: Announcement[] = []
+  let events: Event[] = []
+  let announcementsError: string | null = null
+  let eventsError: string | null = null
 
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
+  try {
+    announcements = await getRecentAnnouncements(5)
+  } catch (error) {
+    announcementsError = 'Failed to load announcements'
+    console.error('Error fetching announcements:', error)
+  }
+
+  try {
+    events = await getUpcomingEvents(3)
+  } catch (error) {
+    eventsError = 'Failed to load upcoming events'
+    console.error('Error fetching events:', error)
+  }
 
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
+    <>
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="container">
+          <h1 className="hero-title">
+            {process.env.NEXT_PUBLIC_HERO_TITLE || 'Welcome to Our Ward'}
+          </h1>
+          <p className="hero-subtitle">
+            {process.env.NEXT_PUBLIC_HERO_SUBTITLE ||
+              'Stay connected with the latest announcements, events, and activities in our ward community.'}
+          </p>
         </div>
+      </section>
+
+      <div className="container">
+        <AnnouncementsList
+          announcements={announcements}
+          error={announcementsError}
+          title="Recent Announcements"
+        />
+
+        <EventsList events={events} error={eventsError} title="Upcoming Events" />
       </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
-    </div>
+    </>
   )
 }

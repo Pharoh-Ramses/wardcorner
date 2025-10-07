@@ -9,6 +9,12 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Members } from './collections/Members'
+import { AssignmentsCallings } from './collections/AssignmentsCallings'
+import { Announcements } from './collections/Announcements'
+import { Events } from './collections/Events'
+import { SacramentPrograms } from './collections/SacramentPrograms'
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,7 +26,15 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [
+    Users,
+    Media,
+    Members,
+    AssignmentsCallings,
+    Announcements,
+    Events,
+    SacramentPrograms,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -34,6 +48,18 @@ export default buildConfig({
   sharp,
   plugins: [
     payloadCloudPlugin(),
+    formBuilderPlugin({
+      fields: {
+        text: true,
+        textarea: true,
+        select: true,
+        email: true,
+        checkbox: true,
+        number: true,
+        date: true,
+        radio: true,
+      },
+    }),
     // storage-adapter-placeholder
   ],
 })
