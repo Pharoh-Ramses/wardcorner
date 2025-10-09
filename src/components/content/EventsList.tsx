@@ -24,25 +24,27 @@ export default function EventsList({
 
   return (
     <section className="content-section">
-      <h2 className="section-title">{title}</h2>
-      {events.length === 0 ? (
-        <div className="loading">No upcoming events scheduled.</div>
-      ) : (
-        <>
-          <div className="events-grid">
-            {events.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-          </div>
-          {showViewAll && (
-            <div className="section-footer">
-              <Link href="/events" className="btn">
-                View All Events
-              </Link>
+      <div className="container">
+        <h2 className="section-title">{title}</h2>
+        {events.length === 0 ? (
+          <div className="loading">No upcoming events scheduled.</div>
+        ) : (
+          <>
+            <div className="events-grid">
+              {events.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
             </div>
-          )}
-        </>
-      )}
+            {showViewAll && (
+              <div className="section-footer">
+                <Link href="/events" className="btn">
+                  View All Events
+                </Link>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </section>
   )
 }

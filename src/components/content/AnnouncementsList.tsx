@@ -24,25 +24,27 @@ export default function AnnouncementsList({
 
   return (
     <section className="content-section">
-      <h2 className="section-title">{title}</h2>
-      {announcements.length === 0 ? (
-        <div className="loading">No announcements available.</div>
-      ) : (
-        <>
-          <div className="announcements-grid">
-            {announcements.map((announcement) => (
-              <AnnouncementCard key={announcement.id} announcement={announcement} />
-            ))}
-          </div>
-          {showViewAll && (
-            <div className="section-footer">
-              <Link href="/announcements" className="btn">
-                View All Announcements
-              </Link>
+      <div className="container">
+        <h2 className="section-title">{title}</h2>
+        {announcements.length === 0 ? (
+          <div className="loading font-color-secondary">No announcements available.</div>
+        ) : (
+          <>
+            <div className="announcements-grid">
+              {announcements.map((announcement) => (
+                <AnnouncementCard key={announcement.id} announcement={announcement} />
+              ))}
             </div>
-          )}
-        </>
-      )}
+            {showViewAll && (
+              <div className="section-footer">
+                <Link href="/announcements" className="btn">
+                  View All Announcements
+                </Link>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </section>
   )
 }
