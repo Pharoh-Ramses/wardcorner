@@ -1,14 +1,21 @@
 import React from 'react'
-import { getRecentAnnouncements, getUpcomingEvents } from '@/lib/payload'
-import type { Announcement, Event } from '@/payload-types'
-import AnnouncementsList from '@/components/content/AnnouncementsList'
-import EventsList from '@/components/content/EventsList'
+import {
+  getRecentAnnouncements,
+  getUpcomingEvents,
+  getMostRecentSacramentProgram,
+} from '@/lib/payload'
+import type { Announcement, Event, SacramentProgram } from '@/payload-types'
+import AnnouncementsSplit from '@/components/content/AnnouncementsSplit'
+import EventsSplit from '@/components/content/EventsSplit'
+import SacramentProgramSection from '@/components/content/SacramentProgramSection'
 
 export default async function HomePage() {
   let announcements: Announcement[] = []
   let events: Event[] = []
+  let sacramentProgram: SacramentProgram | null = null
   let announcementsError: string | null = null
   let eventsError: string | null = null
+  let sacramentProgramError: string | null = null
 
   try {
     announcements = await getRecentAnnouncements(5)
@@ -22,6 +29,13 @@ export default async function HomePage() {
   } catch (error) {
     eventsError = 'Failed to load upcoming events'
     console.error('Error fetching events:', error)
+  }
+
+  try {
+    sacramentProgram = await getMostRecentSacramentProgram()
+  } catch (error) {
+    sacramentProgramError = 'Failed to load sacrament program'
+    console.error('Error fetching sacrament program:', error)
   }
 
   return (
@@ -39,15 +53,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <div className="container">
-        <AnnouncementsList
-          announcements={announcements}
-          error={announcementsError}
-          title="Recent Announcements"
-        />
+      <EventsSplit events={events} error={eventsError} title="Upcoming Events" />
 
-        <EventsList events={events} error={eventsError} title="Upcoming Events" />
-      </div>
+      <SacramentProgramSection program={sacramentProgram} error={sacramentProgramError} />
+
+      <AnnouncementsSplit
+        announcements={announcements}
+        error={announcementsError}
+        title="Recent Announcements"
+      />
     </>
   )
 }

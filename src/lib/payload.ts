@@ -1,7 +1,7 @@
 import { getPayload } from 'payload'
 import { cache } from 'react'
 import config from '@/payload.config'
-import type { Announcement, Event } from '@/payload-types'
+import type { Announcement, Event, SacramentProgram } from '@/payload-types'
 
 export async function getPayloadClient() {
   const payloadConfig = await config
@@ -40,4 +40,21 @@ export const getUpcomingEvents = cache(async (limit: number = 3): Promise<Event[
   })
 
   return result.docs
+})
+
+export const getMostRecentSacramentProgram = cache(async (): Promise<SacramentProgram | null> => {
+  const payload = await getPayloadClient()
+
+  const result = await payload.find({
+    collection: 'sacrament-programs',
+    limit: 1,
+    sort: '-date',
+    where: {
+      date: {
+        less_than_equal: new Date().toISOString(),
+      },
+    },
+  })
+
+  return result.docs[0] || null
 })
