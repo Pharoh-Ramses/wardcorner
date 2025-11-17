@@ -83,5 +83,14 @@ export const Events: CollectionConfig = {
       relationTo: 'assignments-callings',
       hasMany: false,
     },
+    {
+      name: 'gallery',
+      type: 'relationship',
+      relationTo: 'media',
+      hasMany: true,
+      admin: {
+        description: 'Add event photos to the gallery',
+      },
+    },
   ],
 }

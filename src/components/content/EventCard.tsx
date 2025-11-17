@@ -1,6 +1,7 @@
 import type { Event } from '@/payload-types'
 import { formatEventDateTime } from '@/lib/utils/formatters'
 import RichText from '@/components/ui/RichText'
+import Link from 'next/link'
 
 interface EventCardProps {
   event: Event
@@ -8,7 +9,7 @@ interface EventCardProps {
 
 export default function EventCard({ event }: EventCardProps) {
   return (
-    <div className="event-card card">
+    <Link href={`/events/${event.id}`} className="event-card card">
       <h3 className="event-card__title">{event.title}</h3>
       <div className="event-card__date">
         {formatEventDateTime(event.startDateTime, event.endDateTime)}
@@ -31,6 +32,9 @@ export default function EventCard({ event }: EventCardProps) {
           )}
         </div>
       )}
-    </div>
+      <div className="event-card__action">
+        <span className="btn btn-primary">View Details</span>
+      </div>
+    </Link>
   )
 }

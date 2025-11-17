@@ -8,6 +8,7 @@ import type { Announcement, Event, SacramentProgram } from '@/payload-types'
 import AnnouncementsSplit from '@/components/content/AnnouncementsSplit'
 import EventsSplit from '@/components/content/EventsSplit'
 import SacramentProgramSection from '@/components/content/SacramentProgramSection'
+import AboutSection from '@/components/content/AboutSection'
 
 export default async function HomePage() {
   let announcements: Announcement[] = []
@@ -52,6 +53,8 @@ export default async function HomePage() {
           </p>
         </div>
       </section>
+
+      <AboutSection />
 
       <EventsSplit events={events} error={eventsError} title="Upcoming Events" />
 

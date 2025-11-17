@@ -272,6 +272,10 @@ export interface Event {
   eventType: 'meeting' | 'activity' | 'service' | 'other';
   rsvpRequired?: boolean | null;
   contactPerson?: (number | null) | AssignmentsCalling;
+  /**
+   * Add event photos to the gallery
+   */
+  gallery?: (number | Media)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -709,6 +713,7 @@ export interface EventsSelect<T extends boolean = true> {
   eventType?: T;
   rsvpRequired?: T;
   contactPerson?: T;
+  gallery?: T;
   updatedAt?: T;
   createdAt?: T;
 }
