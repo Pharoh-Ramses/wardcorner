@@ -1,3 +1,5 @@
+import Link from 'next/link'
+import Link from 'next/link'
 import type { SacramentProgram } from '@/payload-types'
 import { formatDate } from '@/lib/utils/formatters'
 import SacramentProgramCard from './SacramentProgramCard'
@@ -32,9 +34,9 @@ export default function SacramentProgramSection({
               </p>
             </div>
             <div className="sacrament-program-section__actions">
-              <a href="/sacrament-programs" className="btn btn-primary">
+              <Link href="/sacrament-programs" className="btn btn-primary">
                 Browse archive
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -67,9 +69,9 @@ export default function SacramentProgramSection({
             </p>
           </div>
           <div className="sacrament-program-section__actions">
-            <a href="/sacrament-programs" className="btn btn-primary">
+            <Link href="/sacrament-programs" className="btn btn-primary">
               View past programs
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -79,7 +81,7 @@ export default function SacramentProgramSection({
 
         <div className="sacrament-program-section__footer">
           <p className="sacrament-program-section__footer-text">
-            Need an earlier outline? <a href="/sacrament-programs">Browse the archive</a>
+            Need an earlier outline? <Link href="/sacrament-programs">Browse the archive</Link>
           </p>
         </div>
       </div>
