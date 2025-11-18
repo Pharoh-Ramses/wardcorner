@@ -15,11 +15,20 @@
   --text-secondary: #3a3a40;
   --text-muted: #6b7280;
 
+  /* Derived surfaces */
+  --surface-contrast: color-mix(in srgb, var(--text-primary) 35%, transparent);
+  --surface-contrast-strong: color-mix(in srgb, var(--text-primary) 65%, transparent);
+  --surface-elevated: color-mix(in srgb, var(--bg-primary) 70%, var(--bg-secondary) 30%);
+  --surface-glass: color-mix(in srgb, var(--bg-primary) 40%, transparent);
+  --text-on-contrast: var(--bg-primary);
+  --text-on-contrast-muted: color-mix(in srgb, var(--bg-primary) 70%, var(--text-secondary) 30%);
+
   /* Border colors */
   --border-color: #eaecf0;
   --border-hover: #d0d5dd;
 
   /* Spacing */
+
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -1248,19 +1257,36 @@ svg {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  border-radius: 120px;
+  border-radius: 0;
   background:
-    radial-gradient(circle at 12% 18%, rgba(79, 70, 229, 0.45), transparent 55%),
-    radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.35), transparent 45%),
-    linear-gradient(135deg, #050816, #111827 55%, #312e81);
-  color: #ffffff;
+    radial-gradient(
+      circle at 12% 18%,
+      color-mix(in srgb, var(--primary-color) 45%, transparent),
+      transparent 65%
+    ),
+    radial-gradient(
+      circle at 85% 10%,
+      color-mix(in srgb, var(--accent-color) 55%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-contrast-strong) 60%, var(--primary-color) 40%),
+      color-mix(in srgb, var(--primary-color) 55%, var(--secondary-color) 45%) 55%,
+      color-mix(in srgb, var(--surface-contrast) 65%, var(--secondary-color) 35%)
+    );
+  color: var(--text-on-contrast);
   overflow: hidden;
 }
 
 .events-hero__glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.15), transparent 60%);
+  background: radial-gradient(
+    circle at 30% 50%,
+    color-mix(in srgb, var(--accent-color) 40%, transparent),
+    transparent 60%
+  );
   opacity: 0.6;
   pointer-events: none;
 }
@@ -1286,7 +1312,8 @@ svg {
   gap: 6px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
+  background: color-mix(in srgb, var(--primary-color) 25%, var(--bg-primary));
+  color: var(--text-primary);
   font-size: 0.85rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1296,12 +1323,13 @@ svg {
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   margin: var(--spacing-md) 0;
   font-family: var(--font-serif);
+  color: var(--text-on-contrast);
 }
 
 .events-hero__lede {
   font-size: 1.125rem;
   max-width: 560px;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-on-contrast-muted);
 }
 
 .events-hero__stats {
@@ -1314,27 +1342,28 @@ svg {
 .events-hero__stat {
   padding: var(--spacing-md) var(--spacing-lg);
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid color-mix(in srgb, var(--text-on-contrast) 20%, transparent);
+  background: color-mix(in srgb, var(--text-on-contrast) 10%, transparent);
 }
 
 .events-hero__stat-value {
   font-size: clamp(1.75rem, 4vw, 2.75rem);
   font-weight: 700;
   display: block;
+  color: var(--text-on-contrast);
 }
 
 .events-hero__stat-label {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-on-contrast-muted);
 }
 
 .events-hero__highlight {
-  background: rgba(255, 255, 255, 0.97);
+  background: var(--surface-elevated);
   border-radius: 40px;
   padding: var(--spacing-2xl);
-  box-shadow: 0 30px 80px rgba(8, 15, 40, 0.35);
-  color: #0f172a;
+  box-shadow: 0 30px 80px color-mix(in srgb, var(--surface-contrast) 45%, transparent);
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
@@ -1344,22 +1373,23 @@ svg {
   font-size: 0.85rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #4c1d95;
+  color: var(--secondary-color);
 }
 
 .events-hero__highlight-title {
   font-size: 2rem;
   font-weight: 700;
   margin: 0;
+  color: var(--text-primary);
 }
 
 .events-hero__detail {
   font-size: 1rem;
-  color: #1f2937;
+  color: var(--text-secondary);
 }
 
 .events-hero__location {
-  color: #4b5563;
+  color: var(--text-muted);
 }
 
 .events-hero__tags {
@@ -1373,13 +1403,13 @@ svg {
   border-radius: 16px;
   font-size: 0.8rem;
   font-weight: 600;
-  background: #eef2ff;
-  color: #3730a3;
+  background: color-mix(in srgb, var(--primary-color) 15%, var(--bg-primary));
+  color: var(--primary-color);
 }
 
 .events-hero__badge--accent {
-  background: #fef3c7;
-  color: #92400e;
+  background: color-mix(in srgb, var(--accent-color) 60%, var(--bg-primary) 40%);
+  color: var(--text-primary);
 }
 
 .events-hero__cta {
@@ -1390,25 +1420,26 @@ svg {
 }
 
 .events-hero__secondary {
-  background: rgba(15, 23, 42, 0.08);
-  border: 1px solid rgba(15, 23, 42, 0.1);
-  color: #0f172a;
+  background: color-mix(in srgb, var(--bg-primary) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-color) 80%, var(--primary-color) 20%);
+  color: var(--text-primary);
 
   &:hover {
-    background: rgba(15, 23, 42, 0.15);
+    background: color-mix(in srgb, var(--bg-primary) 80%, transparent);
   }
 }
 
 .events-hero__empty {
   text-align: center;
-  color: #4b5563;
+  color: var(--text-secondary);
 }
 
 .events-upcoming {
   margin: var(--spacing-2xl) 0;
   padding: var(--spacing-2xl) 0;
-  background: var(--bg-secondary, #0e1425);
-  border-radius: 72px;
+  background: color-mix(in srgb, var(--bg-secondary) 85%, var(--surface-contrast) 15%);
+  border-radius: 48px;
+  color: var(--text-primary);
 }
 
 .events-upcoming__header {
@@ -1436,7 +1467,7 @@ svg {
 .events-timeline__title {
   font-size: clamp(2rem, 4vw, 3rem);
   margin: var(--spacing-sm) 0;
-  color: #ffffff;
+  color: var(--text-primary);
   font-family: var(--font-serif);
 }
 
@@ -1455,17 +1486,18 @@ svg {
 .events-upcoming__filter {
   padding: 12px 18px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: color-mix(in srgb, var(--bg-primary) 80%, var(--primary-color) 20%);
+  border: 1px solid color-mix(in srgb, var(--border-color) 80%, var(--primary-color) 20%);
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  color: #f3f4f6;
+  color: var(--text-primary);
 }
 
 .events-upcoming__filter-count {
   font-weight: 700;
   font-size: 1.1rem;
+  color: var(--primary-color);
 }
 
 .events-upcoming__grid {
@@ -1475,8 +1507,8 @@ svg {
 }
 
 .events-upcoming__column {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--bg-primary) 90%, var(--bg-secondary) 10%);
+  border: 1px solid color-mix(in srgb, var(--border-color) 85%, var(--primary-color) 15%);
   border-radius: 40px;
   padding: var(--spacing-xl);
   display: flex;
@@ -1490,20 +1522,20 @@ svg {
   padding: 4px 12px;
   border-radius: 999px;
   font-size: 0.85rem;
-  background: rgba(255, 255, 255, 0.1);
-  color: #f3f4f6;
+  background: color-mix(in srgb, var(--primary-color) 15%, var(--bg-primary));
+  color: var(--primary-color);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
 .events-upcoming__type-title {
   font-size: 1.35rem;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: var(--spacing-sm) 0;
 }
 
 .events-upcoming__type-helper {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
@@ -1519,9 +1551,9 @@ svg {
   gap: var(--spacing-md);
   padding: var(--spacing-lg);
   border-radius: var(--radius-xl, 28px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(5, 9, 20, 0.6);
-  color: #f9fafb;
+  border: 1px solid color-mix(in srgb, var(--border-color) 80%, var(--primary-color) 20%);
+  background: color-mix(in srgb, var(--bg-primary) 85%, var(--surface-contrast) 15%);
+  color: var(--text-primary);
   text-decoration: none;
   transition:
     transform 0.2s ease,
@@ -1529,24 +1561,25 @@ svg {
 
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.35);
+    border-color: color-mix(in srgb, var(--primary-color) 40%, var(--border-color) 60%);
   }
 }
 
 .events-upcoming__item-date {
   font-size: 0.9rem;
-  color: #cbd5f5;
+  color: var(--text-muted);
 }
 
 .events-upcoming__item-title {
   font-size: 1.1rem;
   font-weight: 600;
   margin: 4px 0;
+  color: var(--text-primary);
 }
 
 .events-upcoming__item-location {
   font-size: 0.9rem;
-  color: rgba(243, 244, 246, 0.7);
+  color: var(--text-secondary);
 }
 
 .events-upcoming__item-meta {
@@ -1558,52 +1591,52 @@ svg {
 
 .events-upcoming__item-action {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--primary-color);
 }
 
 .events-upcoming__item-rsvp {
   padding: 2px 10px;
   border-radius: 12px;
-  background: rgba(250, 204, 21, 0.2);
-  color: #facc15;
+  background: color-mix(in srgb, var(--accent-color) 70%, var(--bg-primary) 30%);
+  color: var(--text-primary);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
 .events-upcoming__item--meeting {
-  border-color: rgba(59, 130, 246, 0.35);
-  background: rgba(59, 130, 246, 0.08);
+  border-color: color-mix(in srgb, var(--primary-color) 60%, var(--border-color) 40%);
+  background: color-mix(in srgb, var(--bg-primary) 80%, var(--primary-color) 20%);
 }
 
 .events-upcoming__item--activity {
-  border-color: rgba(16, 185, 129, 0.4);
-  background: rgba(16, 185, 129, 0.08);
+  border-color: color-mix(in srgb, var(--accent-color) 60%, var(--border-color) 40%);
+  background: color-mix(in srgb, var(--bg-primary) 80%, var(--accent-color) 20%);
 }
 
 .events-upcoming__item--service {
-  border-color: rgba(249, 115, 22, 0.4);
-  background: rgba(249, 115, 22, 0.08);
+  border-color: color-mix(in srgb, var(--secondary-color) 60%, var(--border-color) 40%);
+  background: color-mix(in srgb, var(--bg-primary) 80%, var(--secondary-color) 20%);
 }
 
 .events-upcoming__item--other {
-  border-color: rgba(168, 85, 247, 0.4);
-  background: rgba(168, 85, 247, 0.08);
+  border-color: color-mix(in srgb, var(--secondary-color) 50%, var(--accent-color) 50%);
+  background: color-mix(in srgb, var(--bg-primary) 70%, var(--accent-color) 30%);
 }
 
 .events-upcoming__more {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-secondary);
 }
 
 .events-upcoming__empty,
 .events-timeline__empty {
   padding: var(--spacing-xl);
   text-align: center;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--text-secondary);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--bg-primary) 85%, var(--bg-secondary) 15%);
+  border: 1px solid color-mix(in srgb, var(--border-color) 85%, var(--primary-color) 15%);
 }
 
 .events-timeline {
@@ -1633,8 +1666,8 @@ svg {
 }
 
 .events-timeline__month {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--bg-primary) 90%, var(--bg-secondary) 10%);
+  border: 1px solid color-mix(in srgb, var(--border-color) 80%, var(--primary-color) 20%);
   border-radius: 40px;
   padding: var(--spacing-xl);
 }
@@ -1642,7 +1675,7 @@ svg {
 .events-timeline__month-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #f9fafb;
+  color: var(--text-primary);
   margin-bottom: var(--spacing-lg);
 }
 
@@ -1655,7 +1688,7 @@ svg {
   display: flex;
   gap: var(--spacing-lg);
   padding: var(--spacing-lg) 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid color-mix(in srgb, var(--border-color) 75%, var(--primary-color) 25%);
 
   &:first-child {
     border-top: none;
@@ -1666,7 +1699,7 @@ svg {
 .events-timeline__date {
   min-width: 72px;
   text-align: center;
-  color: #a5b4fc;
+  color: var(--primary-color);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1701,13 +1734,14 @@ svg {
   font-size: 1.2rem;
   font-weight: 600;
   margin: 0;
+  color: var(--text-primary);
 }
 
 .events-timeline__status {
   padding: 4px 12px;
   border-radius: 999px;
-  background: rgba(34, 197, 94, 0.15);
-  color: #4ade80;
+  background: color-mix(in srgb, var(--accent-color) 65%, var(--bg-primary) 35%);
+  color: var(--text-primary);
   font-size: 0.85rem;
 }
 
