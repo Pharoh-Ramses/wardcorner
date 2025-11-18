@@ -59,6 +59,38 @@ export const getMostRecentSacramentProgram = cache(async (): Promise<SacramentPr
   return result.docs[0] || null
 })
 
+export const getSacramentPrograms = cache(
+  async (limit: number = 52): Promise<SacramentProgram[]> => {
+    const payload = await getPayloadClient()
+
+    const result = await payload.find({
+      collection: 'sacrament-programs',
+      limit,
+      sort: '-date',
+    })
+
+    return result.docs
+  },
+)
+
+export const getSacramentProgramById = cache(
+  async (id: number | string): Promise<SacramentProgram | null> => {
+    const payload = await getPayloadClient()
+
+    try {
+      const program = await payload.findByID({
+        collection: 'sacrament-programs',
+        id,
+        depth: 2,
+      })
+
+      return program ?? null
+    } catch (_error) {
+      return null
+    }
+  },
+)
+
 export const getAllEvents = cache(async (limit: number = 100): Promise<Event[]> => {
   const payload = await getPayloadClient()
 
