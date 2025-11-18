@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Link from 'next/link'
 import type { SacramentProgram } from '@/payload-types'
 import { formatDate } from '@/lib/utils/formatters'
 import SacramentProgramCard from './SacramentProgramCard'
