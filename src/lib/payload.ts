@@ -58,3 +58,15 @@ export const getMostRecentSacramentProgram = cache(async (): Promise<SacramentPr
 
   return result.docs[0] || null
 })
+
+export const getAllEvents = cache(async (limit: number = 100): Promise<Event[]> => {
+  const payload = await getPayloadClient()
+
+  const result = await payload.find({
+    collection: 'events',
+    limit,
+    sort: 'startDateTime',
+  })
+
+  return result.docs
+})

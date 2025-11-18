@@ -67,7 +67,7 @@ export default function EventsSplit({
           {/* Right column - Event details */}
           <div className="events-split__detail">
             {selectedEvent ? (
-              <EventDetail event={selectedEvent} />
+              <EventDetail event={selectedEvent} showEventLink showBackLink={false} />
             ) : (
               <div className="events-split__placeholder">Select an event to view details</div>
             )}

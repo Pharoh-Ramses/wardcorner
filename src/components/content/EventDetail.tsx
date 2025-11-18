@@ -6,9 +6,15 @@ import Link from 'next/link'
 
 interface EventDetailProps {
   event: Event
+  showEventLink?: boolean
+  showBackLink?: boolean
 }
 
-export default function EventDetail({ event }: EventDetailProps) {
+export default function EventDetail({
+  event,
+  showEventLink = false,
+  showBackLink = true,
+}: EventDetailProps) {
   return (
     <div className="event-detail">
       <div className="event-detail__header">
@@ -94,9 +100,16 @@ export default function EventDetail({ event }: EventDetailProps) {
           )}
         </div>
         <div className="event-detail__actions">
-          <Link href="/events" className="btn">
-            ← Back to Events
-          </Link>
+          {showEventLink && (
+            <Link href={`/events/${event.id}`} className="btn btn-primary">
+              View Event Page →
+            </Link>
+          )}
+          {showBackLink && (
+            <Link href="/events" className="btn">
+              ← Back to Events
+            </Link>
+          )}
         </div>
       </div>
     </div>
