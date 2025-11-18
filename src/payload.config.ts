@@ -1,7 +1,7 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -60,6 +60,14 @@ export default buildConfig({
         radio: true,
       },
     }),
-    // storage-adapter-placeholder
+    vercelBlobStorage({
+      enabled: process.env.NODE_ENV === 'production', // Only enable in production
+      collections: {
+        media: true, // Enable for media collection
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      addRandomSuffix: false, // Keep original filenames
+      cacheControlMaxAge: 365 * 24 * 60 * 60, // 1 year cache
+    }),
   ],
 })
