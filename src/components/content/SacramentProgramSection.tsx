@@ -27,8 +27,8 @@ export default function SacramentProgramSection({
               <p className="sacrament-program-section__eyebrow">Worship Service</p>
               <h2 className="sacrament-program-section__title">Sacrament Program</h2>
               <p className="sacrament-program-section__description">
-                We'll share the next sacrament meeting outline as soon as it's ready. In the
-                meantime, explore past programs for talks, hymns, and assignments.
+                We&rsquo;ll share the next sacrament meeting outline as soon as it&rsquo;s ready. In
+                the meantime, explore past programs for talks, hymns, and assignments.
               </p>
             </div>
             <div className="sacrament-program-section__actions">
@@ -62,7 +62,8 @@ export default function SacramentProgramSection({
               <span className="sacrament-program-section__pill">Updated {programDate}</span>
             </div>
             <p className="sacrament-program-section__description">
-              Review the speakers, hymns, and leadership assignments ahead of this week's meeting.
+              Review the speakers, hymns, and leadership assignments ahead of this week&rsquo;s
+              meeting.
             </p>
           </div>
           <div className="sacrament-program-section__actions">

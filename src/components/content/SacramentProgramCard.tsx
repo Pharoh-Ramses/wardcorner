@@ -61,7 +61,7 @@ export default function SacramentProgramCard({ program }: SacramentProgramCardPr
   return (
     <article className="sacrament-program-card" aria-label="Sacrament program details">
       <header className="sacrament-program-card__header">
-        <span className="sacrament-program-card__eyebrow">This week's worship service</span>
+        <span className="sacrament-program-card__eyebrow">This week&rsquo;s worship service</span>
         <h3 className="sacrament-program-card__date">{friendlyDate}</h3>
         <p className="sacrament-program-card__weekday">{weekday}</p>
       </header>
