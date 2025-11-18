@@ -6,6 +6,7 @@ import EventListItem from './EventListItem'
 import EventDetail from './EventDetail'
 import Loading from '@/components/ui/Loading'
 import ErrorMessage from '@/components/ui/ErrorMessage'
+import Link from 'next/link'
 
 interface EventsSplitProps {
   events: Event[]
@@ -56,9 +57,9 @@ export default function EventsSplit({
 
             {showViewAll && (
               <div className="events-split__view-all">
-                <a href="/events" className="btn">
+                <Link href="/events" className="btn">
                   View All Events
-                </a>
+                </Link>
               </div>
             )}
           </div>
