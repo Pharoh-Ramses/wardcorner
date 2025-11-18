@@ -6,16 +6,14 @@ interface SacramentProgramCardProps {
   program: SacramentProgram
 }
 
+type SpeakerReference = number | { fullName?: string | null; name?: string | null }
+
 export default function SacramentProgramCard({ program }: SacramentProgramCardProps) {
-  // Helper function to extract speaker name
-  const getSpeakerName = (speaker: number | any) => {
+  const getSpeakerName = (speaker: SpeakerReference | null | undefined) => {
     if (typeof speaker === 'number') {
-      // If it's just an ID, we can't fetch the name without additional API calls
-      // For now, show the ID or a placeholder
       return `Speaker #${speaker}`
     }
 
-    // If it's a populated object, use the fullName
     if (speaker && typeof speaker === 'object') {
       return speaker.fullName || speaker.name || 'Unknown Speaker'
     }
@@ -23,76 +21,105 @@ export default function SacramentProgramCard({ program }: SacramentProgramCardPr
     return 'Unknown Speaker'
   }
 
-  // Group musical numbers by type
-  const getMusicalNumbersByType = (type: string) => {
-    return program.musicalNumbers?.filter((mn) => mn.type === type) || []
+  const meetingDate = new Date(program.date)
+  const weekday = meetingDate.toLocaleDateString('en-US', { weekday: 'long' })
+  const friendlyDate = formatDate(program.date)
+
+  const leadershipSummary = [
+    { label: 'Presiding', value: program.presiding },
+    { label: 'Conducting', value: program.conducting },
+  ]
+
+  const musicalNumbers = program.musicalNumbers || []
+  const musicalTypeLabels: Record<string, string> = {
+    'opening-hymn': 'Opening Hymn',
+    'sacrament-hymn': 'Sacrament Hymn',
+    'intermediate-hymn': 'Intermediate Hymn',
+    'closing-hymn': 'Closing Hymn',
+    special: 'Special Musical Number',
   }
 
+  const orderedMusicalTypes: Array<keyof typeof musicalTypeLabels> = [
+    'opening-hymn',
+    'sacrament-hymn',
+    'intermediate-hymn',
+    'closing-hymn',
+    'special',
+  ]
+
+  const musicalGroups = orderedMusicalTypes
+    .map((type) => ({
+      type,
+      label: musicalTypeLabels[type],
+      items: musicalNumbers.filter((mn) => mn.type === type),
+    }))
+    .filter((group) => group.items.length > 0)
+
+  const speakers = program.speakers || []
+  const hasSpeakers = speakers.length > 0
+
   return (
-    <div className="sacrament-program-card">
-      <div className="sacrament-program-card__header">
-        <h3 className="sacrament-program-card__date">{formatDate(program.date)}</h3>
+    <article className="sacrament-program-card" aria-label="Sacrament program details">
+      <header className="sacrament-program-card__header">
+        <span className="sacrament-program-card__eyebrow">This week's worship service</span>
+        <h3 className="sacrament-program-card__date">{friendlyDate}</h3>
+        <p className="sacrament-program-card__weekday">{weekday}</p>
+      </header>
+
+      <div className="sacrament-program-card__meta-grid" role="list">
+        {leadershipSummary.map((item) => (
+          <div key={item.label} className="sacrament-program-card__meta-item" role="listitem">
+            <p className="sacrament-program-card__meta-label">{item.label}</p>
+            <p className="sacrament-program-card__meta-value">{item.value || 'To be announced'}</p>
+          </div>
+        ))}
       </div>
 
-      <div className="sacrament-program-card__content">
-        {program.presiding && program.conducting && (
-          <div className="sacrament-program-section">
-            <div className="sacrament-program-row">
-              <span className="sacrament-program-label">Presiding:</span>
-              <span className="sacrament-program-value">{program.presiding}</span>
-              <span className="sacrament-program-label">Conducting:</span>
-              <span className="sacrament-program-value">{program.conducting}</span>
-            </div>
-          </div>
-        )}
-
-        {program.musicalNumbers && (
-          <div className="sacrament-program-section">
+      {musicalGroups.length > 0 && (
+        <section className="sacrament-program-card__group" aria-label="Music selections">
+          <div className="sacrament-program-card__group-header">
             <h4 className="sacrament-program-section-title">Music</h4>
-            <div className="sacrament-program-music-row">
-              {getMusicalNumbersByType('opening-hymn').map((mn, index) => (
-                <div key={`opening-${index}`} className="sacrament-program-music-item">
-                  <div className="sacrament-program-music-type">Opening</div>
-                  <div className="sacrament-program-music-song">{mn.song || 'TBD'}</div>
-                </div>
-              ))}
-              {getMusicalNumbersByType('sacrament-hymn').map((mn, index) => (
-                <div key={`sacrament-${index}`} className="sacrament-program-music-item">
-                  <div className="sacrament-program-music-type">Sacrament</div>
-                  <div className="sacrament-program-music-song">{mn.song || 'TBD'}</div>
-                </div>
-              ))}
-              {getMusicalNumbersByType('closing-hymn').map((mn, index) => (
-                <div key={`closing-${index}`} className="sacrament-program-music-item">
-                  <div className="sacrament-program-music-type">Closing</div>
-                  <div className="sacrament-program-music-song">{mn.song || 'TBD'}</div>
-                </div>
-              ))}
-            </div>
-            {getMusicalNumbersByType('special').map((mn, index) => (
-              <div key={`special-${index}`} className="sacrament-program-row">
-                <span className="sacrament-program-label">Special:</span>
-                <span className="sacrament-program-value">
-                  {mn.song || 'Musical Number'}
-                  {mn.performer && ` - ${getSpeakerName(mn.performer)}`}
-                </span>
-              </div>
-            ))}
+            <p className="sacrament-program-group-description">
+              Hymns & musical numbers for the service
+            </p>
           </div>
-        )}
+          <div className="sacrament-program-card__music-grid">
+            {musicalGroups.map((group) =>
+              group.items.map((mn, index) => (
+                <div key={`${group.type}-${index}`} className="sacrament-program-card__music-card">
+                  <p className="sacrament-program-music-type">{group.label}</p>
+                  <p className="sacrament-program-music-song">{mn.song || 'To be announced'}</p>
+                  {group.type === 'special' && mn.performer && (
+                    <p className="sacrament-program-music-performer">
+                      {getSpeakerName(mn.performer)}
+                    </p>
+                  )}
+                </div>
+              )),
+            )}
+          </div>
+        </section>
+      )}
 
-        {program.speakers && program.speakers.length > 0 && (
-          <div className="sacrament-program-section">
-            <h4 className="sacrament-program-section-title">Speakers</h4>
-            {program.speakers.map((speaker, index) => (
-              <div key={index} className="sacrament-program-talk">
-                <span className="sacrament-program-speaker">{getSpeakerName(speaker.speaker)}</span>
-                {speaker.topic && <span className="sacrament-program-topic">{speaker.topic}</span>}
-              </div>
-            ))}
+      {hasSpeakers && (
+        <section className="sacrament-program-card__group" aria-label="Speakers">
+          <div className="sacrament-program-card__group-header">
+            <h4 className="sacrament-program-section-title">Speaker lineup</h4>
+            <p className="sacrament-program-group-description">Topics & focus for the meeting</p>
           </div>
-        )}
-      </div>
-    </div>
+          <ol className="sacrament-program-card__speakers">
+            {speakers.map((speaker, index) => (
+              <li key={`speaker-${index}`} className="sacrament-program-card__speaker">
+                <span className="sacrament-program-card__speaker-dot" aria-hidden="true" />
+                <div>
+                  <p className="sacrament-program-speaker">{getSpeakerName(speaker.speaker)}</p>
+                  {speaker.topic && <p className="sacrament-program-topic">{speaker.topic}</p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+    </article>
   )
 }

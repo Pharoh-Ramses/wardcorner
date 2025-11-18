@@ -1955,184 +1955,305 @@ svg {
 
 /* Sacrament Program Section Styles */
 .sacrament-program-section {
-  padding: var(--spacing-2xl) 0;
-  background: transparent; /* Blends with website background */
+  padding: var(--spacing-3xl) 0 var(--spacing-4xl);
+  background: linear-gradient(180deg, #fffbe4 0%, #fffdfa 45%, transparent 100%);
+}
+
+.sacrament-program-section__intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+  flex-wrap: wrap;
+}
+
+.sacrament-program-section__eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-sm);
+}
+
+.sacrament-program-section__heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
 }
 
 .sacrament-program-section__title {
-  text-align: center;
-  margin-bottom: var(--spacing-xl);
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
+  margin: 0;
   font-family: var(--font-serif);
-  font-size: 64px;
-  font-weight: 700;
-
-  @media (max-width: 768px) {
-    font-size: 3rem;
-  }
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
 }
 
-.sacrament-program-section__empty {
-  text-align: center;
-  padding: var(--spacing-xl);
-  color: var(--text-muted);
-  font-size: 1.125rem;
+.sacrament-program-section__pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.sacrament-program-section__description {
+  color: var(--text-secondary);
+  max-width: 620px;
+  margin: var(--spacing-md) 0 0;
+  line-height: 1.6;
+}
+
+.sacrament-program-section__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
 .sacrament-program-section__content {
-  max-width: 800px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
+.sacrament-program-section__empty-card {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border-color);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.sacrament-program-section__empty {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sacrament-program-section__empty-subtitle {
+  margin: var(--spacing-xs) 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
 .sacrament-program-section__footer {
+  margin-top: var(--spacing-2xl);
   text-align: center;
-  margin-top: var(--spacing-xl);
+}
+
+.sacrament-program-section__footer-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.sacrament-program-section__footer-text a {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .sacrament-program-section__intro {
+    flex-direction: column;
+  }
+
+  .sacrament-program-section__actions {
+    width: 100%;
+  }
 }
 
 /* Sacrament Program Card Styles */
 .sacrament-program-card {
-  background: #f8f9fa; /* Off-white color */
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s ease;
+  background: var(--bg-primary);
+  border: 1px solid rgba(24, 27, 45, 0.08);
+  border-radius: var(--radius-xl, 32px);
+  padding: clamp(var(--spacing-xl), 4vw, var(--spacing-2xl));
+  box-shadow: 0 45px 80px -50px rgba(31, 41, 55, 0.45);
+  position: relative;
+  overflow: hidden;
+}
 
-  &:hover {
-    box-shadow: 0 12px 40px -12px rgb(16 24 40 / 0.3);
-    transform: translateY(-2px);
-  }
+.sacrament-program-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  pointer-events: none;
 }
 
 .sacrament-program-card__header {
-  margin-bottom: var(--spacing-lg);
-  padding-bottom: var(--spacing-md);
-  border-bottom: 1px solid var(--border-color);
   text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.sacrament-program-card__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--primary-color);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: var(--spacing-sm);
 }
 
 .sacrament-program-card__date {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--primary-color);
   margin: 0;
-
-  @media (max-width: 768px) {
-    font-size: 1.125rem;
-  }
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
-.sacrament-program-card__content {
+.sacrament-program-card__weekday {
+  margin: var(--spacing-xs) 0 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.sacrament-program-card__meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.sacrament-program-card__meta-item {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  background: rgba(249, 250, 251, 0.9);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.sacrament-program-card__meta-label {
+  margin: 0 0 var(--spacing-xs);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.sacrament-program-card__meta-value {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sacrament-program-card__group {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.sacrament-program-card__group:last-of-type {
+  margin-bottom: 0;
+}
+
+.sacrament-program-card__group-header {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.sacrament-program-section {
-  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
 }
 
 .sacrament-program-section-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-xs);
+  margin: 0;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.sacrament-program-row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: 2px;
-  padding: 2px 0;
-
-  @media (max-width: 640px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-  }
-}
-
-.sacrament-program-music-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-sm);
-  padding: var(--spacing-xs) 0;
-}
-
-.sacrament-program-music-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-  flex: 1;
-  min-width: 120px;
-}
-
-.sacrament-program-label {
-  font-size: 0.75rem;
-  font-weight: 600;
+  letter-spacing: 0.2em;
   color: var(--text-muted);
-  min-width: 100px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+}
 
-  @media (max-width: 640px) {
-    min-width: auto;
-  }
+.sacrament-program-group-description {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.sacrament-program-card__music-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.sacrament-program-card__music-card {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-sm);
 }
 
 .sacrament-program-music-type {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--primary-color);
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 2px;
+  letter-spacing: 0.2em;
+  margin: 0 0 4px;
 }
 
 .sacrament-program-music-song {
-  font-size: 0.875rem;
-  font-weight: 500;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.3;
 }
 
-.sacrament-program-value {
-  font-size: 0.875rem;
+.sacrament-program-music-performer {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
   color: var(--text-secondary);
-  line-height: 1.4;
-  flex: 1;
+  font-style: italic;
 }
 
-.sacrament-program-talk {
+.sacrament-program-card__speakers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: var(--spacing-sm);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background: rgba(255, 255, 255, 0.7); /* Lighter background for contrast */
-  border-radius: var(--radius-sm);
-  margin-bottom: 2px;
+}
 
-  @media (max-width: 640px) {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: var(--spacing-xs);
-  }
+.sacrament-program-card__speaker {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  background: rgba(249, 250, 251, 0.8);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.sacrament-program-card__speaker-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--primary-color);
+  margin-top: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
 }
 
 .sacrament-program-speaker {
-  font-size: 0.875rem;
+  margin: 0;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .sacrament-program-topic {
-  font-size: 0.75rem;
+  margin: 2px 0 0;
+  font-size: 0.85rem;
   color: var(--text-secondary);
   font-style: italic;
 }
