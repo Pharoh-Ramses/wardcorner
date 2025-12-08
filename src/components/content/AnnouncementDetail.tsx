@@ -1,12 +1,17 @@
 import type { Announcement } from '@/payload-types'
 import { formatDate } from '@/lib/utils/formatters'
 import RichText from '@/components/ui/RichText'
+import Link from 'next/link'
 
 interface AnnouncementDetailProps {
   announcement: Announcement
+  showBackLink?: boolean
 }
 
-export default function AnnouncementDetail({ announcement }: AnnouncementDetailProps) {
+export default function AnnouncementDetail({
+  announcement,
+  showBackLink = true,
+}: AnnouncementDetailProps) {
   return (
     <div className="announcement-detail">
       <div className="announcement-detail__header">
@@ -20,6 +25,17 @@ export default function AnnouncementDetail({ announcement }: AnnouncementDetailP
 
         <h1 className="announcement-detail__title">{announcement.title}</h1>
       </div>
+
+      {announcement.author && typeof announcement.author === 'object' && (
+        <div className="announcement-detail__author">
+          <h3 className="announcement-detail__author-title">Author</h3>
+          <div className="announcement-detail__author-info">
+            <span className="announcement-detail__author-name">
+              👤 {announcement.author.email || 'Unknown'}
+            </span>
+          </div>
+        </div>
+      )}
 
       <div className="announcement-detail__content">
         <RichText content={announcement.content} />
@@ -36,6 +52,13 @@ export default function AnnouncementDetail({ announcement }: AnnouncementDetailP
             </span>
           )}
         </div>
+        {showBackLink && (
+          <div className="announcement-detail__actions">
+            <Link href="/announcements" className="btn">
+              ← Back to Announcements
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import React from 'react'
-import EventDetail from '@/components/content/EventDetail'
+import AnnouncementDetail from '@/components/content/AnnouncementDetail'
 import ErrorMessage from '@/components/ui/ErrorMessage'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
@@ -11,21 +11,21 @@ interface PageProps {
   }>
 }
 
-export default async function EventDetailPage({ params }: PageProps) {
+export default async function AnnouncementDetailPage({ params }: PageProps) {
   const { id } = await params
   const payload = await getPayload({ config })
 
   try {
-    const event = await payload.findByID({
-      collection: 'events',
+    const announcement = await payload.findByID({
+      collection: 'announcements',
       id,
-      depth: 3, // Populate related media, contact person, and member data
+      depth: 3, // Populate author information
     })
 
-    if (!event) {
+    if (!announcement) {
       return (
         <div className="container">
-          <ErrorMessage message="Event not found" />
+          <ErrorMessage message="Announcement not found" />
         </div>
       )
     }
@@ -33,15 +33,15 @@ export default async function EventDetailPage({ params }: PageProps) {
     return (
       <div className="container">
         <div className="section">
-          <EventDetail event={event} />
+          <AnnouncementDetail announcement={announcement} />
         </div>
       </div>
     )
   } catch (error) {
-    console.error('Error fetching event:', error)
+    console.error('Error fetching announcement:', error)
     return (
       <div className="container">
-        <ErrorMessage message="Failed to load event" />
+        <ErrorMessage message="Failed to load announcement" />
       </div>
     )
   }
@@ -51,13 +51,13 @@ export async function generateStaticParams() {
   const payload = await getPayload({ config })
 
   try {
-    const events = await payload.find({
-      collection: 'events',
-      limit: 100, // Adjust based on your needs
+    const announcements = await payload.find({
+      collection: 'announcements',
+      limit: 100,
     })
 
-    return events.docs.map((event) => ({
-      id: event.id.toString(),
+    return announcements.docs.map((announcement) => ({
+      id: announcement.id.toString(),
     }))
   } catch (_error) {
     console.error('Error generating static params:', _error)
@@ -70,26 +70,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const payload = await getPayload({ config })
 
   try {
-    const event = await payload.findByID({
-      collection: 'events',
+    const announcement = await payload.findByID({
+      collection: 'announcements',
       id,
     })
 
-    if (!event) {
+    if (!announcement) {
       return {
-        title: 'Event Not Found',
+        title: 'Announcement Not Found',
       }
     }
 
     return {
-      title: event.title,
-      description: event.description
-        ? `Event on ${new Date(event.startDateTime).toLocaleDateString()}`
-        : `Event on ${new Date(event.startDateTime).toLocaleDateString()}`,
+      title: announcement.title,
+      description: `Published on ${new Date(announcement.publishDate).toLocaleDateString()}`,
     }
   } catch (_error) {
     return {
-      title: 'Event Details',
+      title: 'Announcement Details',
     }
   }
 }

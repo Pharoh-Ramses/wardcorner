@@ -5,10 +5,10 @@ import {
   getMostRecentSacramentProgram,
 } from '@/lib/payload'
 import type { Announcement, Event, SacramentProgram } from '@/payload-types'
-import AnnouncementsSplit from '@/components/content/AnnouncementsSplit'
-import EventsSplit from '@/components/content/EventsSplit'
+import HomeFeed from '@/components/content/HomeFeed'
 import SacramentProgramSection from '@/components/content/SacramentProgramSection'
 import AboutSection from '@/components/content/AboutSection'
+import Section from '@/components/ui/Section'
 
 export default async function HomePage() {
   let announcements: Announcement[] = []
@@ -42,29 +42,32 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="hero">
-        <div className="container">
-          <h1 className="hero-title">
-            {process.env.NEXT_PUBLIC_HERO_TITLE || 'Welcome to Our Ward'}
-          </h1>
-          <p className="hero-subtitle">
-            {process.env.NEXT_PUBLIC_HERO_SUBTITLE ||
-              'Stay connected with the latest announcements, events, and activities in our ward community.'}
-          </p>
-        </div>
-      </section>
+      <Section variant="default" className="hero">
+        <h1 className="hero-title">
+          {process.env.NEXT_PUBLIC_HERO_TITLE || 'Welcome to Our Ward'}
+        </h1>
+        <p className="hero-subtitle">
+          {process.env.NEXT_PUBLIC_HERO_SUBTITLE ||
+            'Stay connected with the latest announcements, events, and activities in our ward community.'}
+        </p>
+      </Section>
 
-      <AboutSection />
+      <Section variant="default">
+        <AboutSection />
+      </Section>
 
-      <EventsSplit events={events} error={eventsError} title="Upcoming Events" />
+      <Section variant="highlighted">
+        <HomeFeed
+          events={events}
+          announcements={announcements}
+          eventsError={eventsError}
+          announcementsError={announcementsError}
+        />
+      </Section>
 
-      <SacramentProgramSection program={sacramentProgram} error={sacramentProgramError} />
-
-      <AnnouncementsSplit
-        announcements={announcements}
-        error={announcementsError}
-        title="Recent Announcements"
-      />
+      <Section variant="highlighted">
+        <SacramentProgramSection program={sacramentProgram} error={sacramentProgramError} />
+      </Section>
     </>
   )
 }

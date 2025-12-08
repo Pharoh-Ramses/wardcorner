@@ -43,6 +43,17 @@ export const Announcements: CollectionConfig = {
       required: true,
     },
     {
+      name: 'icon',
+      type: 'select',
+      options: [
+        { label: '📄 Document', value: 'document' },
+        { label: '📢 Announcement', value: 'announcement' },
+        { label: '🎉 Activity', value: 'activity' },
+        { label: 'ℹ️ Update', value: 'update' },
+      ],
+      defaultValue: 'announcement',
+    },
+    {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,

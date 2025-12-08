@@ -48,12 +48,62 @@ export default function EventDetail({
                 {event.location.city && `, ${event.location.city}`}
                 {event.location.state && `, ${event.location.state}`}
                 {event.location.zipCode && ` ${event.location.zipCode}`}
+                {event.location.country && `, ${event.location.country}`}
+              </div>
+            )}
+            {event.location.streetAddress && (
+              <div className="event-detail__map-link">
+                <a
+                  href={`https://maps.google.com/?q=${encodeURIComponent(
+                    `${event.location.venueName || ''} ${event.location.streetAddress} ${event.location.city || ''} ${event.location.state || ''} ${event.location.zipCode || ''}`.trim(),
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="event-detail__map-button"
+                >
+                  🗺️ Get Directions
+                </a>
               </div>
             )}
           </div>
         </div>
       )}
 
+      {event.contactPerson && typeof event.contactPerson === 'object' && (
+        <div className="event-detail__contact">
+          <h2 className="event-detail__contact-title">Contact Information</h2>
+          <div className="event-detail__contact-details">
+            {event.contactPerson.member && typeof event.contactPerson.member === 'object' && (
+              <>
+                {event.contactPerson.member.fullName && (
+                  <div className="event-detail__contact-name">
+                    👤 {event.contactPerson.member.fullName}
+                  </div>
+                )}
+                {event.contactPerson.member.email && (
+                  <div className="event-detail__contact-email">
+                    📧{' '}
+                    <a href={`mailto:${event.contactPerson.member.email}`}>
+                      {event.contactPerson.member.email}
+                    </a>
+                  </div>
+                )}
+                {event.contactPerson.member.phone && (
+                  <div className="event-detail__contact-phone">
+                    📞{' '}
+                    <a href={`tel:${event.contactPerson.member.phone}`}>
+                      {event.contactPerson.member.phone}
+                    </a>
+                  </div>
+                )}
+              </>
+            )}
+            {event.contactPerson.calling && (
+              <div className="event-detail__contact-calling">📋 {event.contactPerson.calling}</div>
+            )}
+          </div>
+        </div>
+      )}
       {/* Gallery Section */}
       {event.gallery && event.gallery.length > 0 && (
         <div className="event-detail__gallery">

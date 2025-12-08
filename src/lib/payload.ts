@@ -102,3 +102,20 @@ export const getAllEvents = cache(async (limit: number = 100): Promise<Event[]> 
 
   return result.docs
 })
+
+export const getAllAnnouncements = cache(async (limit: number = 100): Promise<Announcement[]> => {
+  const payload = await getPayloadClient()
+
+  const result = await payload.find({
+    collection: 'announcements',
+    limit,
+    sort: '-publishDate',
+    where: {
+      publishDate: {
+        less_than_equal: new Date().toISOString(),
+      },
+    },
+  })
+
+  return result.docs
+})
